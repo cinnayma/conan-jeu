@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Détective Conan – L'Affaire du Ruban Écarlate</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0d1117;
+            color: #e6edf3;
+            text-align: center;
+            padding: 20px;
+        }
+        .scene, .dialogue, .choices, .clues, .result { display: none; }
+        .active { display: block; }
+        .btn {
+            background-color: #1f6feb;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            margin: 8px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+        .btn:hover { background-color: #4a90e2; }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #161b22;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        .image {
+            width: 150px;
+            height: 150px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .celebration {
+            background-color: #FFD700;
+            color: #333;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        .puzzle {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1a1f2b;
+            border-radius: 10px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin-top: 10px;
+            width: 80%;
+            border-radius: 8px;
+            border: none;
+        }
+        .hint { display: none; color: #aaa; font-style: italic; }
+        audio { margin-top: 15px; }
+        .testimony img {
+            max-width: 150px;
+            border-radius: 8px;
+            margin: 10px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Détective Conan – Enquête d'anniversaire</h1>
+
+        <div id="mainMenu" class="scene active">
+            <p>Bienvenue jeune détective. Une mission secrète t'attend aujourd’hui pour célébrer un anniversaire bien particulier. Prépare-toi à résoudre plusieurs énigmes…</p>
+            <button class="btn" onclick="startPuzzles()">Commencer l’enquête</button>
+            <audio controls loop>
+                <source src="theme-conan.mp3" type="audio/mpeg" />
+                Votre navigateur ne supporte pas l'audio HTML5.
+            </audio>
+        </div>
+
+        <!-- Puzzle 1 -->
+        <div id="puzzle1" class="scene puzzle">
+            <h2>🔎 Énigme 1 – Message Chiffré</h2>
+            <p>"Uifsf jt b tfdsfu nfttbhf ijeefo cz uif dboemfmjhiu"</p>
+            <button class="btn" onclick="toggleHint('hint1')">Afficher l’indice</button>
+            <p id="hint1" class="hint">Indice : Chaque lettre a été décalée d’un cran dans l’alphabet (code de César +1).</p>
+            <input type="text" id="answer1" autocomplete="off" /><br />
+            <button class="btn" onclick="checkAnswer(1, 'there is a secret message hidden by the candlelight')">Valider</button>
+            <p id="error1" style="color:#f44336;"></p>
+        </div>
+
+        <!-- Puzzle 2 -->
+        <div id="puzzle2" class="scene puzzle">
+            <h2>🔎 Énigme 2 – Moment mythique de Conan</h2>
+            <p>Dans quel lieu emblématique Conan redevient temporairement Shinichi pour la première fois ?</p>
+            <button class="btn" onclick="toggleHint('hint2')">Afficher l’indice</button>
+            <p id="hint2" class="hint">Indice : Un endroit romantique sous la pluie à Tokyo. La...</p>
+            <input type="text" id="answer2" autocomplete="off" /><br />
+            <button class="btn" onclick="checkAnswer(2, 'tour de tokyo')">Valider</button>
+            <p id="error2" style="color:#f44336;"></p>
+        </div>
+
+        <!-- Puzzle 3 -->
+        <div id="puzzle3" class="scene puzzle">
+            <h2>🔎 Énigme 3 – Leur rencontre</h2>
+            <p>Souviens-toi de nos débuts sur le serveur Discord...<br />Tu as répondu... ?</p>
+            <input type="text" id="answer3" autocomplete="off" /><br />
+            <button class="btn" onclick="checkAnswer(3, 'yes ?')">Valider</button>
+            <p id="error3" style="color:#f44336;"></p>
+        </div>
+
+        <!-- Puzzle 4 -->
+        <div id="puzzle4" class="scene puzzle">
+            <h2>🔎 Énigme 4 – Devinette</h2>
+            <p>Plus tu en as, moins tu vois.<br />Invisible, silencieux, je t’enveloppe sans bruit.<br />Qui suis-je ?</p>
+            <input type="text" id="answer4" autocomplete="off" /><br />
+            <button class="btn" onclick="checkAnswer(4, 'le brouillard')">Valider</button>
+            <p id="error4" style="color:#f44336;"></p>
+        </div>
+
+        <!-- Final message -->
+        <div id="finalMessage" class="scene">
+            <div class="celebration">
+                <img src="gateau.jpg" class="image" alt="Gâteau d'anniversaire" />
+                <p>🎉 Joyeux anniversaire, détective en herbe ! 🎉<br />
+                    Aujourd’hui, je voulais marquer ce jour d’une touche de mystère, comme tu les aimes. Merci pour ta bienveillance, ton humour et ta présence. Longue vie, détective préféré. 🕵️‍♂️❤️
+                </p>
+                <button class="btn" onclick="startFinalGame()">🔴 Lancer l'Affaire du Ruban Écarlate</button>
+            </div>
+        </div>
+
+        <!-- Final Game -->
+        <div id="finalGame" class="scene puzzle">
+            <h2>🕵️‍♂️ Affaire du Ruban Écarlate</h2>
+            <p>Un meurtre a eu lieu lors d'une fête. Quatre suspects. Un seul coupable. Tu n'as droit qu'à deux essais pour accuser. Interroge-les d'abord !</p>
+            <p><strong>Les suspects :</strong></p>
+            <button class="btn" onclick="showTestimony('alice')">Interroger Alice</button>
+            <button class="btn" onclick="showTestimony('marc')">Interroger Marc</button>
+            <button class="btn" onclick="showTestimony('julie')">Interroger Julie</button>
+            <button class="btn" onclick="showTestimony('carla')">Interroger Carla</button>
+
+            <div id="testimony" class="testimony">
+                <img id="suspectImg" src="" alt="Photo du suspect" />
+                <p id="testimonyText"></p>
+            </div>
+
+            <p><strong>Indice général :</strong><br />
+                Le ruban écarlate du costume du coupable a été retrouvé taché de vin rouge. Mais… personne n’en portait officiellement.
+            </p>
+
+            <input type="text" id="finalAnswer" placeholder="Nom du coupable" autocomplete="off" /><br />
+            <button class="btn" onclick="checkFinal()">Accuser</button>
+            <p id="finalError" style="color:#f44336;"></p>
+        </div>
+    </div>
+
+<script>
+    // Fonction toggle pour les indices
+    function toggleHint(id) {
+        const hint = document.getElementById(id);
+        if (hint.style.display === 'block') {
+            hint.style.display = 'none';
+        } else {
+            hint.style.display = 'block';
+        }
+    }
+
+    // Gestion des réponses aux puzzles
+    function checkAnswer(num, correctAnswer) {
+        const input = document.getElementById('answer' + num);
+        const error = document.getElementById('error' + num);
+        const userAnswer = input.value.trim().toLowerCase();
+
+        if (userAnswer === correctAnswer.toLowerCase()) {
+            error.style.color = 'lightgreen';
+            error.textContent = "✅ Bonne réponse !";
+
+            // Passer à la scène suivante ou afficher finalMessage si dernier puzzle
+            if (num < 4) {
+                setTimeout(() => {
+                    showScene('puzzle' + (num + 1));
+                    error.textContent = "";
+                    input.value = "";
+                }, 1000);
+            } else {
+                setTimeout(() => {
+                    showScene('finalMessage');
+                    error.textContent = "";
+                    input.value = "";
+                }, 1500);
+            }
+        } else {
+            error.style.color = '#f44336';
+            error.textContent = "❌ Mauvaise réponse, essaie encore.";
+        }
+    }
+
+    // Fonction pour afficher une scène
+    function showScene(id) {
+        document.querySelectorAll('.scene').forEach(scene => {
+            scene.classList.remove('active');
+        });
+        document.getElementById(id).classList.add('active');
+    }
+
+    // Lancer les puzzles depuis le menu principal
+    function startPuzzles() {
+        showScene('puzzle1');
+    }
+
+    // Démarrer le jeu final
+    function startFinalGame() {
+        showScene('finalGame');
+    }
+
+    // Photos des suspects
+    const suspectPhotos = {
+        "alice": "alice.jpg",
+        "marc": "marc.jpg",
+        "julie": "julie.jpg",
+        "carla": "carla.jpg"
+    };
+
+    // Témoignages des suspects
+    const testimonies = {
+        "alice": "J’étais près de la baie vitrée. J’ai vu quelqu’un près du buffet changer rapidement de vêtement. Mais je ne peux pas dire qui, c’était trop confus, la lumière était faible.",
+        "marc": "Je servais les boissons et j’ai remarqué que Julie semblait distraite. Elle a parlé d’une absence brève, mais elle n’a jamais dit où elle était vraiment.",
+        "julie": "Pendant que je gérais la musique, j’ai vu Carla sortir précipitamment de la salle. Elle portait sa robe habituelle, mais après un moment, elle est revenue avec une écharpe rouge différente, ce qui m’a paru étrange.",
+        "carla": "Je suis partie me changer, mais ce n’était pas pour longtemps. J’ai entendu des rumeurs sur quelqu’un qui aurait renversé du vin près du buffet, ça m’a un peu inquiétée…"
+    };
+
+    // Afficher témoignage d’un suspect
+    function showTestimony(suspect) {
+        const img = document.getElementById('suspectImg');
+        const text = document.getElementById('testimonyText');
+
+        img.src = suspectPhotos[suspect] || "";
+        img.alt = `Photo de ${suspect.charAt(0).toUpperCase() + suspect.slice(1)}`;
+        text.textContent = testimonies[suspect];
+    }
+
+    let attempts = 0;
+    function checkFinal() {
+        const answerInput = document.getElementById('finalAnswer');
+        const answer = answerInput.value.trim().toLowerCase();
+        const error = document.getElementById('finalError');
+        attempts++;
+
+        if (answer === 'carla') {
+            alert("Bravo détective ! C'était bien Carla. Son changement de tenue suspect et l’écharpe rouge tachée de vin ont trahi sa culpabilité. Tu as résolu l'affaire ! 🎉");
+            // Reset
+            attempts = 0;
+            answerInput.value = "";
+            error.textContent = "";
+            document.getElementById('testimonyText').textContent = "";
+            document.getElementById('suspectImg').src = "";
+            showScene('mainMenu');
+        } else {
+            if (attempts >= 2) {
+                error.textContent = "❌ Deux tentatives... Affaire non résolue. Réessaie depuis le début si tu veux te rattraper.";
+                // Optionnel : reset essais et revenir au menu
+                setTimeout(() => {
+                    attempts = 0;
+                    error.textContent = "";
+                    answerInput.value = "";
+                    document.getElementById('testimonyText').textContent = "";
+                    document.getElementById('suspectImg').src = "";
+                    showScene('mainMenu');
+                }, 3000);
+            } else {
+                error.textContent = "Ce n'est pas le bon suspect. Il te reste une tentative.";
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
