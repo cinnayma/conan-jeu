@@ -149,7 +149,7 @@
             </div>
 
             <p><strong>Indice général :</strong><br />
-                Le ruban écarlate du costume du coupable a été retrouvé taché de vin rouge. Mais… personne n’en portait officiellement.
+                Le ruban écarlate du costume du coupable a été retrouvé taché de pom's. Mais… personne n’en portait officiellement.
             </p>
 
             <input type="text" id="finalAnswer" placeholder="Nom du coupable" autocomplete="off" /><br />
@@ -230,7 +230,7 @@
         "ines": "J’étais près de la baie vitrée. J’ai vu quelqu’un près du buffet changer rapidement de vêtement. Mais je ne peux pas dire qui, c’était trop confus, la lumière était faible.",
         "amine": "Je servais les boissons et j’ai remarqué que Kenza semblait distraite. Elle a parlé d’une absence brève, mais elle n’a jamais dit où elle était vraiment.",
         "kenza": "Pendant que je gérais la musique, j’ai vu Kamelia sortir précipitamment de la salle. Elle portait sa robe habituelle, mais après un moment, elle est revenue avec une écharpe rouge différente, ce qui m’a paru étrange.",
-        "kamelia": "Je suis partie me changer, mais ce n’était pas pour longtemps. J’ai entendu des rumeurs sur quelqu’un qui aurait renversé du vin près du buffet, ça m’a un peu inquiétée…"
+        "kamelia": "Je suis partie me changer, mais ce n’était pas pour longtemps. J’ai entendu des rumeurs sur quelqu’un qui aurait renversé du pom's près du buffet, ça m’a un peu inquiétée…"
     };
 
     // Afficher témoignage d’un suspect
@@ -250,8 +250,8 @@
         const error = document.getElementById('finalError');
         attempts++;
 
-        if (answer === 'carla') {
-            alert("Bravo détective ! C'était bien Carla. Son changement de tenue suspect et l’écharpe rouge tachée de vin ont trahi sa culpabilité. Tu as résolu l'affaire ! 🎉");
+        if (answer === 'kamelia') {
+            alert("Bravo détective ! C'était bien Kamelia. Son changement de tenue suspect et l’écharpe rouge tachée de pom's ont trahi sa culpabilité. Tu as résolu l'affaire ! 🎉");
             // Reset
             attempts = 0;
             answerInput.value = "";
